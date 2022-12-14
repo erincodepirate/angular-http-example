@@ -26,4 +26,12 @@ export class UserService {
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(this.url + user.id, user);
   }
+
+  updateUserWithPatch(user: any): Observable<User> {
+    return this.http.patch<User>(this.url + '/' + user['id'], user);
+  }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(this.url + '/' + id);
+  }
 }

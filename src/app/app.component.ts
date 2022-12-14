@@ -56,6 +56,12 @@ export class AppComponent implements OnInit {
     }
   }
 
+  private patchUser = {
+    "id": 5,
+    "name": "Weee",
+    "email": "foo@bar.com"
+  }
+
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
@@ -63,6 +69,8 @@ export class AppComponent implements OnInit {
     this.onGetUser();
     this.onCreateUser();
     this.onUpdateUser();
+    this.onPatchUser();
+    this.onDeleteUser();
   }
 
   onGetUsers(): void {
@@ -103,6 +111,18 @@ export class AppComponent implements OnInit {
 
   onUpdateUser(): void {
     this.userService.updateUser(this.otherUser).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  onPatchUser(): void {
+    this.userService.updateUserWithPatch(this.patchUser).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  onDeleteUser(): void {
+    this.userService.deleteUser(2).subscribe(res => {
       console.log(res);
     })
   }
