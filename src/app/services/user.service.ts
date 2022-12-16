@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user';
 
@@ -45,5 +45,13 @@ export class UserService {
 
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(this.url + '/' + id);
+  }
+
+  getTextFile(): Observable<string> {
+    return this.http.get(`assets/text.txt`, { responseType: 'text' })
+  }
+
+  getBlobFile(): Observable<HttpResponse<Blob>> {
+    return this.http.get(`assets/text.txt`, { responseType: 'blob', observe: 'response' })
   }
 }

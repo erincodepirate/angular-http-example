@@ -71,6 +71,8 @@ export class AppComponent implements OnInit {
     this.onUpdateUser();
     this.onPatchUser();
     this.onDeleteUser();
+    this.onGetTextFile();
+    this.onGetBlobFile();
   }
 
   onGetUsers(): void {
@@ -123,6 +125,18 @@ export class AppComponent implements OnInit {
 
   onDeleteUser(): void {
     this.userService.deleteUser(2).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  onGetTextFile(): void {
+    this.userService.getTextFile().subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  onGetBlobFile(): void {
+    this.userService.getBlobFile().subscribe(res => {
       console.log(res);
     })
   }
