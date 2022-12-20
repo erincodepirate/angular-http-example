@@ -1,2 +1,25 @@
 <p>Hello</p>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Picture</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <!--th>Website</th-->
+    </tr>
+    <th></th>
+    <tr *ngFor="let user of users; let number = index">
+        <td>{{ number + 1 }}</td>
+        <td><img style="height:50px" [src]="user.image"></td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.isAdmin ? 'admin' : 'user' }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <!--td>{{ user.website }}</td-->
+    </tr>
+</table>
 <router-outlet></router-outlet>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { User } from '../interfaces/user';
 
 @Injectable({
@@ -10,6 +10,9 @@ export class UserService {
 
   url = 'http://jsonplaceholder.typicode.com/users/'
   constructor(private http: HttpClient) { }
+
+
+  private readonly defaultImage = 'https://robohash.org';
 
   getUsers(): Observable<User[]> {
     let myHeaders = new HttpHeaders({'myheader': ['header value1', 'header value2']});
@@ -24,11 +27,28 @@ export class UserService {
 
     //let myParams = new HttpParams({'fromString': "?foo=bar"});
 
-    return this.http.get<User[]>(this.url, {'headers':myHeaders, 'params': myParams});
+    return this.http.get<User[]>(this.url, {'headers':myHeaders, 'params': myParams}).pipe(
+      tap(users => {
+        console.log("in the tap");
+        console.log(users);
+      }),
+      map(users => {
+        return users.map(user => ({
+          ...user,
+          name: user.name.toUpperCase(),
+          image: `${this.defaultImage}/${user.username.toLowerCase()}`,
+          isAdmin: user.id === 10? true : false
+        }));
+      })
+    );
   }
 
   getUser(userid = 1): Observable<User> {
-    return this.http.get<User>(this.url + userid);
+    return this.http.get<User>(this.url + userid).pipe(
+      map(user => {
+        return {...user, isAdmin: true};
+      })
+    );
   }
 
   createUser(user: User): Observable<User> {

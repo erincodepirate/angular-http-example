@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { User } from './interfaces/user';
 import { UserService } from './services/user.service';
 
@@ -9,6 +10,7 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent implements OnInit {
   title = 'angularhttp';
+  public users: User[] = [];
   private user: User = {
 		"name": "Beavis",
 		"username": "Buttmunch",
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
 			"bs": "crypto is cringe"
 		}
 	}
+
 
   private otherUser: User = {
     "id": 7,
@@ -80,6 +83,7 @@ export class AppComponent implements OnInit {
       {
         next: (res) => {
           console.log(res);
+          this.users = res;
         },
         error: (err) => {
           console.log(err);
