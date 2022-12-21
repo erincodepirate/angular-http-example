@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, tap, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, tap, map, catchError, of, throwError } from 'rxjs';
 import { User } from '../interfaces/user';
 
 @Injectable({
@@ -31,6 +31,12 @@ export class UserService {
       tap(users => {
         console.log("in the tap");
         console.log(users);
+      }),
+      // handle error in the pipe
+      catchError((error: any) => {
+        console.log(error);
+        //return throwError(() => {error});
+        return this.handleError(error);
       }),
       map(users => {
         return users.map(user => ({
@@ -73,5 +79,10 @@ export class UserService {
 
   getBlobFile(): Observable<HttpResponse<Blob>> {
     return this.http.get(`assets/text.txt`, { responseType: 'blob', observe: 'response' })
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    if(error.status === 404) return throwError(() => ({code: 404, message:"not found"}));
+    return throwError(() => ({code: 400, message:"I am error"}));
   }
 }
